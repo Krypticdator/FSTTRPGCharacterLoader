@@ -1,5 +1,5 @@
 package:
-  name: fsttrpgbasiccharacterloader
+  name: fsttrpgcharacterloader
   version: 0.1.0
 
 build:
@@ -7,7 +7,7 @@ build:
  string: alpha
 
 source:
-  git_url: https://github.com/Krypticdator/FSTTRPGBasicInfo.git
+  git_url: https://github.com/Krypticdator/FSTTRPGCharacterLoader.git
 
 requirements:
   build:

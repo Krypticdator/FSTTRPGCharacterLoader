@@ -22,7 +22,7 @@ class Loader(HasTraits):
         Item('load', show_label=False),
         Item('choose_character'),
         Item('choose'),
-        Item('chosen')
+        Item('chosen', style='custom')
     )
 
     def _choose_fired(self):
