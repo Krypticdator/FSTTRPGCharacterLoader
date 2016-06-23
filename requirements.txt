@@ -1,4 +1,5 @@
 traits
 traitsui
+pyside
 requests
 
