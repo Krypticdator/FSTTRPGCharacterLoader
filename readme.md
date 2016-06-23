@@ -1,3 +1,1 @@
-### Fuzion System Table-Top RolePlaying Game Application - Character Loader
-
-This microsystem reades and displays player-characters from Amazon AWS-Database.
+### Fuzion System Table-Top RolePlaying Game Application - Character Loader[![Build Status](https://travis-ci.org/Krypticdator/FSTTRPGCharacterLoader.svg?branch=master)](https://travis-ci.org/Krypticdator/FSTTRPGCharacterLoader)This microsystem reades and displays player-characters from Amazon AWS-Database.
