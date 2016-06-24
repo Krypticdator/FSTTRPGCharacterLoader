@@ -6,18 +6,15 @@ class JsonListOfActors(object):
         super(JsonListOfActors, self).__init__()
         self.actors = dict()
 
-    def load(self, actor_role, with_raws=False):
+    def load(self, actor_role):
         json = aws.get_aws_character_list(actor_role)
         for actor in json:
             name = str(actor['name'])
             attributes = dict()
-            raws = dict()
+
             for key, value in actor.iteritems():
-                attributes[str(key)] = str(value)
-                if with_raws:
-                    raws[key] = value
-            if with_raws:
-                attributes['raws'] = raws
+                attributes[key] = value
+               
             self.actors[name] = attributes
 
 
