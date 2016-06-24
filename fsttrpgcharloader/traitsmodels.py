@@ -27,12 +27,13 @@ class Loader(HasTraits):
 
     def _choose_fired(self):
         self.chosen = list_of_actors.actors[self.selection]
-        print(self.chosen['name'])
+
 
 
     def _load_fired(self):
         list_of_actors.load(self.role)
         self.choose_character = list_of_actors.get_name_list()
+
 
 if __name__ == '__main__':
     l = Loader()

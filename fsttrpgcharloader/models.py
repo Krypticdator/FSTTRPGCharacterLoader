@@ -1,5 +1,6 @@
-import aws
 from __future__ import print_function
+import aws
+
 class JsonListOfActors(object):
     def __init__(self):
         super(JsonListOfActors, self).__init__()
