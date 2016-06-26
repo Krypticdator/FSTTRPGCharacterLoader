@@ -3,7 +3,7 @@ package:
   version: 0.1.4
 
 build:
- number: 1
+ number: 4
  string: alpha
 
 source:
