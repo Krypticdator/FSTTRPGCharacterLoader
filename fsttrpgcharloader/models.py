@@ -14,7 +14,7 @@ class JsonListOfActors(object):
 
             for key, value in actor.iteritems():
                 attributes[key] = value
-               
+
             self.actors[name] = attributes
 
 

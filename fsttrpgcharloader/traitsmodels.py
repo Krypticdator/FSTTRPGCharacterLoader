@@ -5,13 +5,18 @@ import aws
 
 
 from models import JsonListOfActors
-
 list_of_actors = JsonListOfActors()
+
+
+class Name(HasTraits):
+    name = String()
+
 
 class Loader(HasTraits):
 
     role = Enum('NPC', 'PC', 'INPC')
     selection = String()
+    name_field = Instance(Name)
 
     choose_character = ListStr(editor=ListStrEditor(selected='selection'))
     load = Button()
@@ -27,6 +32,7 @@ class Loader(HasTraits):
 
     def _choose_fired(self):
         self.chosen = list_of_actors.actors[self.selection]
+        self.name_field.name = self.selection
 
 
 
@@ -34,7 +40,23 @@ class Loader(HasTraits):
         list_of_actors.load(self.role)
         self.choose_character = list_of_actors.get_name_list()
 
+class CharacterName(HasTraits):
+    role = Enum('NPC', 'PC', 'INPC')
+    name = Instance(Name, ())
+    loader = Instance(Loader)
+
+    view = View(
+        HGroup(
+            Item('role'),
+            Item('name', style='custom', show_label=False),
+            Item('loader', show_label=False)
+        )
+    )
+    def _loader_default(self):
+        return Loader(name_field=self.name)
+
 
 if __name__ == '__main__':
-    l = Loader()
-    l.configure_traits()
+    c = CharacterName()
+
+    c.configure_traits()
