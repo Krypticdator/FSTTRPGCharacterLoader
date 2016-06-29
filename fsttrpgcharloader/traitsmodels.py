@@ -1,15 +1,23 @@
 from __future__ import print_function
+
 from traits.api import *
 from traitsui.api import *
-import aws
-
 
 from models import JsonListOfActors
+
 list_of_actors = JsonListOfActors()
 
 
 class Name(HasTraits):
     name = String()
+    change_listener = Method()
+    view = View(
+        Item('name')
+    )
+
+    def _name_changed(self):
+        self.change_listener()
+
 
 
 class Loader(HasTraits):
@@ -44,6 +52,8 @@ class CharacterName(HasTraits):
     role = Enum('NPC', 'PC', 'INPC')
     name = Instance(Name, ())
     loader = Instance(Loader)
+    name_change_handler = Method()
+
 
     view = View(
         HGroup(
@@ -52,11 +62,24 @@ class CharacterName(HasTraits):
             Item('loader', show_label=False)
         )
     )
+
     def _loader_default(self):
         return Loader(name_field=self.name)
 
+    def _name_default(self):
+        return Name(change_listener=self.name_change_handler)
+        # n.master = self.load_handler
+
+    def _name_changed(self):
+        print('hello')
+
+
+class Foo(object):
+    def bar(self):
+        print('foobar')
 
 if __name__ == '__main__':
-    c = CharacterName()
+    f = Foo()
+    c = CharacterName(name_change_handler=f.bar)
 
     c.configure_traits()
