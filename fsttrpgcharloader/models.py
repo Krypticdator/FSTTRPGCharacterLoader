@@ -1,5 +1,7 @@
 from __future__ import print_function
+
 import aws
+
 
 class JsonListOfActors(object):
     def __init__(self):
@@ -16,8 +18,6 @@ class JsonListOfActors(object):
                 attributes[key] = value
 
             self.actors[name] = attributes
-
-
 
     def get_name_list(self):
         names = []
