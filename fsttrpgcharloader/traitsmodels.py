@@ -88,7 +88,7 @@ class CharacterName(HasTraits):
 
 
     view = View(
-        Item('actor_db_file_location', show_label=False),
+        Item('actor_db_file_location', show_label=False, style='custom'),
         HGroup(
             Item('role'),
             Item('name', style='custom', show_label=False),
