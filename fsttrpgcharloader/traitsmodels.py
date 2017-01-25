@@ -100,6 +100,9 @@ class CharacterName(HasTraits):
     def get_name(self):
         return self.name.name
 
+    def set_name(self, new_name):
+        self.name.name = new_name
+
     def _loader_default(self):
         return Loader(name_field=self.name)
 

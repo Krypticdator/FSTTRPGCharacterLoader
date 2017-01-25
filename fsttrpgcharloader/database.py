@@ -1,34 +1,21 @@
-from peewee import Model, SqliteDatabase, CharField, DoesNotExist
+import os
 
-actor_db = SqliteDatabase(None)
-file_locations = SqliteDatabase('filepaths.db')
+from peewee import Model, SqliteDatabase, CharField
 
 
-class ActorDBFilepath(Model):
-    name = CharField(unique=True)
-    filepath = CharField(unique=True)
+def find_or_create(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            result = os.path.join(root, name)
+            print('found db in: ' + str(result))
+            return result
+    print('didnt find any db, creating new: ' + name)
+    return name
 
-    @staticmethod
-    def add_or_modify(name, filepath):
-        f, created = ActorDBFilepath.get_or_create(name=name, defaults={'filepath': filepath})
 
-        if created:
-            print('created new filepath')
-        else:
-            f.filepath = filepath
-            f.save()
-        return f
-
-    @staticmethod
-    def get_filepath(name):
-        try:
-            return ActorDBFilepath.get(ActorDBFilepath.name == name)
-        except DoesNotExist:
-            print('filepath doesnt exist')
-            return None
-
-    class Meta:
-        database = file_locations
+current_dir = os.path.dirname(__file__)
+database_name = find_or_create('actors.db', current_dir)
+actor_db = SqliteDatabase(database=database_name)
 
 
 class Actor(Model):
@@ -41,7 +28,7 @@ class Actor(Model):
         if created:
             print('created new actor')
         else:
-            pass
+            print('loaded already existing character')
         return actor
 
     @staticmethod
@@ -59,25 +46,6 @@ class Actor(Model):
 class DBManager(object):
     def __init__(self, actor_db_filepath=None):
         super(DBManager, self).__init__()
-        file_locations.connect()
-        file_locations.create_tables([ActorDBFilepath], safe=True)
-        self.filepaths = ActorDBFilepath()
-
-        if actor_db_filepath:
-
-            actor_db.init(actor_db_filepath)
-            self.filepaths.add_or_modify('actors_location', actor_db_filepath)
-        else:
-            f = self.filepaths.get_filepath('actors_location')
-            if f:
-                actor_db.init(f.filepath)
-        actor_location = self.filepaths.get_filepath('actors_location')
-        if actor_location:
-            print('saving actors to location: ' + actor_location.filepath)
-        else:
-            actor_db.init('actors.db')
-            self.filepaths.add_or_modify('actors_location', 'actors.db')
-
         actor_db.connect()
         actor_db.create_tables([Actor], safe=True)
         self.actors = Actor()
@@ -85,5 +53,3 @@ class DBManager(object):
     def __del__(self):
         if actor_db:
             actor_db.close()
-        if file_locations:
-            file_locations.close()
